@@ -13,8 +13,8 @@ export class ScoresService {
     private readonly scoresRepository: Repository<Scores>,
   ) {}
 
-  async getScoresBySBD(getScoresDTO: GetScoresDto) {
-    return await this.scoresRepository.findOne({
+  async getScoresBySBD(getScoresDTO: GetScoresDto): Promise<Scores | null> {
+    return this.scoresRepository.findOne({
       where: { sbd: getScoresDTO.sbd },
     });
   }
@@ -57,5 +57,19 @@ export class ScoresService {
       .getMany();
 
     return students;
+  }
+
+  async getTop10GroupA(): Promise<Scores[]> {
+    const topGroupA = await this.scoresRepository
+      .createQueryBuilder('scores')
+      .where('scores.toan IS NOT NULL')
+      .andWhere('scores.vat_li IS NOT NULL')
+      .andWhere('scores.hoa_hoc IS NOT NULL')
+      .addSelect('scores.toan + scores.vat_li + scores.hoa_hoc', 'total')
+      .orderBy('total', 'DESC')
+      .limit(10)
+      .getMany();
+
+    return topGroupA;
   }
 }

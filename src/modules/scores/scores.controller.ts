@@ -15,4 +15,9 @@ export class ScoresController {
   async getStatisticsData() {
     return await this.scoresService.getStatisticsData();
   }
+
+  @Get('/top-group-a')
+  async getTop10GroupA() {
+    return this.scoresService.getTop10GroupA();
+  }
 }
