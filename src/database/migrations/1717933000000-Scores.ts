@@ -7,17 +7,17 @@ export class CreateDiemThi1717933000000 implements MigrationInterface {
     await queryRunner.query(`
       CREATE TABLE "Scores" (
         "id" SERIAL PRIMARY KEY,
-        "sbd" VARCHAR NOT NULL,
-        "toan" FLOAT NOT NULL,
-        "ngu_van" FLOAT NOT NULL,
-        "ngoai_ngu" FLOAT NOT NULL,
-        "vat_li" FLOAT NOT NULL,
-        "hoa_hoc" FLOAT NOT NULL,
-        "sinh_hoc" FLOAT NOT NULL,
-        "lich_su" FLOAT NOT NULL,
-        "dia_li" FLOAT NOT NULL,
-        "gdcd" FLOAT NOT NULL,
-        "ma_ngoai_ngu" VARCHAR NOT NULL
+        "sbd" VARCHAR,
+        "toan" FLOAT,
+        "ngu_van" FLOAT,
+        "ngoai_ngu" FLOAT,
+        "vat_li" FLOAT,
+        "hoa_hoc" FLOAT,
+        "sinh_hoc" FLOAT,
+        "lich_su" FLOAT,
+        "dia_li" FLOAT,
+        "gdcd" FLOAT,
+        "ma_ngoai_ngu" VARCHAR
       )
     `);
   }
