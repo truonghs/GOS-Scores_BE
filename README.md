@@ -18,37 +18,40 @@ Make sure you have the following installed on your machine:
 - [Npm](https://www.npmjs.com/) (comes with Node.js)
 - [Git](https://git-scm.com/)
 - [PostgreSql](https://www.postgresql.org/)
+
 ## Installation
+
 1. Clone the repository:
 
-    ```bash
-    git clone https://github.com/truonghs/GOS-Scores_BE.git
-    ```
+   ```bash
+   git clone https://github.com/truonghs/GOS-Scores_BE.git
+   ```
 
 2. Install the Nest CLI globally:
 
-  ```bash
-    npm install -g @nestjs/cli
-  ```
-    
+```bash
+  npm install -g @nestjs/cli
+```
 
 3. Navigate into the project directory:
 
-    ```bash
-    cd gos-scores_be
-    ```
+   ```bash
+   cd gos-scores_be
+   ```
 
 4. Install the project dependencies:
 
-    Using npm:
+   Using npm:
 
-    ```bash
-    npm install
-    ```
+   ```bash
+   npm install
+   ```
 
 ## Settings
+
 Add environment variables.\
 At the root of the project, create a .env file and add the following environment variables
+
 ```
 DB_HOST=your_database_host
 DB_PORT=your_database_port
@@ -75,17 +78,23 @@ $ npm run start:dev
 # production mode
 $ npm run start:prod
 ```
+
 ## Migrate and seed data
+
 After running the server, you need to migrate and seed data into the database according to the instructions below.
+
+1. Dowload dataset file from assignment repository. The file name diem_thi_thpt_2024.csv
+2. Create a folder in ./src and name it data.
+3. Move diem_thi_thpt_2024.csv into ./src/data
+4. Run migration and seed data
+
 ```bash
-# Run migration and seed data
 $ npm run typeorm:run-migrations
 $ npm run seed
-
 ```
 
 ## Deployment
 
 The server is deployed with Render!
-- Because of using the free service that Render provides, the server may be stopped if there are no requests for a period of time. So please be patient if your first request to the server takes some time.
 
+- Because of using the free service that Render provides, the server may be stopped if there are no requests for a period of time. So please be patient if your first request to the server takes some time.
