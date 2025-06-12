@@ -1,13 +1,21 @@
 import { MigrationInterface, QueryRunner } from 'typeorm';
 
-export class CreateScores1717933000000 implements MigrationInterface {
-  name = 'CreateScores1717933000000';
+export class CreateStudentsAndScores1717933000000
+  implements MigrationInterface
+{
+  name = 'CreateStudentsAndScores1717933000000';
 
   public async up(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
+      CREATE TABLE "Students" (
+        "sbd" VARCHAR PRIMARY KEY,
+        "ma_ngoai_ngu" VARCHAR
+      )
+    `);
+
+    await queryRunner.query(`
       CREATE TABLE "Scores" (
         "id" SERIAL PRIMARY KEY,
-        "sbd" VARCHAR,
         "toan" FLOAT,
         "ngu_van" FLOAT,
         "ngoai_ngu" FLOAT,
@@ -17,7 +25,8 @@ export class CreateScores1717933000000 implements MigrationInterface {
         "lich_su" FLOAT,
         "dia_li" FLOAT,
         "gdcd" FLOAT,
-        "ma_ngoai_ngu" VARCHAR
+        "sbd" VARCHAR UNIQUE,
+        CONSTRAINT "FK_student_sbd" FOREIGN KEY ("sbd") REFERENCES "Students"("sbd") ON DELETE CASCADE
       )
     `);
   }
@@ -25,6 +34,9 @@ export class CreateScores1717933000000 implements MigrationInterface {
   public async down(queryRunner: QueryRunner): Promise<void> {
     await queryRunner.query(`
       DROP TABLE "Scores"
+    `);
+    await queryRunner.query(`
+      DROP TABLE "Students"
     `);
   }
 }

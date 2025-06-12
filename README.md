@@ -93,6 +93,8 @@ $ npm run typeorm:run-migrations
 $ npm run seed
 ```
 
+5. You need to wait a while for the seeding process to complete.
+
 ## Deployment
 
 The server is deployed with Render!

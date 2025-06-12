@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Scores } from 'src/modules/scores/entities/scores.entity';
+import { GetScoresDto } from 'src/modules/students/dtos/get-scores.dto';
 import { SUBJECTS } from 'src/common/constant';
 import { LEVELS } from 'src/common/enums';
-import { GetScoresDto } from 'src/modules/scores/dtos/get-scores.dto';
-import { Scores } from 'src/modules/scores/entities/scores.entity';
-import { Repository } from 'typeorm';
 
 @Injectable()
 export class ScoresService {
@@ -12,12 +12,6 @@ export class ScoresService {
     @InjectRepository(Scores)
     private readonly scoresRepository: Repository<Scores>,
   ) {}
-
-  async getScoresBySBD(getScoresDTO: GetScoresDto): Promise<Scores | null> {
-    return this.scoresRepository.findOne({
-      where: { sbd: getScoresDTO.sbd },
-    });
-  }
 
   private levels = [
     { name: LEVELS.EXCELLENT, preCondition: '>= 8' },
@@ -27,18 +21,23 @@ export class ScoresService {
   ];
 
   async getStatisticsData() {
-    const result: Array<{}> = [];
+    const result: Array<any> = [];
 
     for (const subject of SUBJECTS) {
-      const subjectObj = { subject };
+      const subjectObj: any = { subject };
       for (const level of this.levels) {
         const count = await this.scoresRepository
           .createQueryBuilder('score')
           .where(
-            `score.${subject} ${level.preCondition} ${level.andCondition ? `AND score.${subject} ${level.andCondition}` : ''}`,
+            `score.${subject} ${level.preCondition} ${
+              level.andCondition
+                ? `AND score.${subject} ${level.andCondition}`
+                : ''
+            }`,
           )
           .andWhere(`score.${subject} IS NOT NULL`)
           .getCount();
+
         subjectObj[level.name] = count;
       }
       result.push(subjectObj);
@@ -46,22 +45,23 @@ export class ScoresService {
 
     return result;
   }
+
   async findTop10GroupAStudents(): Promise<Scores[]> {
-    const students = await this.scoresRepository
+    return this.scoresRepository
       .createQueryBuilder('score')
+      .leftJoinAndSelect('score.student', 'student')
       .where('score.toan IS NOT NULL')
       .andWhere('score.vat_li IS NOT NULL')
       .andWhere('score.hoa_hoc IS NOT NULL')
       .orderBy('(score.toan + score.vat_li + score.hoa_hoc)', 'DESC')
       .take(10)
       .getMany();
-
-    return students;
   }
 
   async getTop10GroupA(): Promise<Scores[]> {
-    const topGroupA = await this.scoresRepository
+    return this.scoresRepository
       .createQueryBuilder('scores')
+      .leftJoinAndSelect('scores.student', 'student')
       .where('scores.toan IS NOT NULL')
       .andWhere('scores.vat_li IS NOT NULL')
       .andWhere('scores.hoa_hoc IS NOT NULL')
@@ -69,7 +69,5 @@ export class ScoresService {
       .orderBy('total', 'DESC')
       .limit(10)
       .getMany();
-
-    return topGroupA;
   }
 }
