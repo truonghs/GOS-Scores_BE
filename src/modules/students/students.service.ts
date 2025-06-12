@@ -18,6 +18,6 @@ export class StudentsService {
     });
 
     if (!studentWithScores) return null;
-    return studentWithScores.scores;
+    return studentWithScores;
   }
 }
